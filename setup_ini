@@ -1,0 +1,114 @@
+#========================================================
+# Setup file for code_saturne installation
+#========================================================
+#
+#--------------------------------------------------------
+# Download packages ?
+#--------------------------------------------------------
+download  yes
+#
+#--------------------------------------------------------
+# Install code_saturne with debugging symbols
+#--------------------------------------------------------
+debug     no
+#
+#--------------------------------------------------------
+# Installation directory
+#--------------------------------------------------------
+prefix    /root/code_saturne/8.0.2
+#
+#--------------------------------------------------------
+# Optional architecture Name (installation subdirectory)
+#--------------------------------------------------------
+use_arch  no
+arch      Linux_x86_64
+#
+#--------------------------------------------------------
+# C compiler and optional MPI wrapper
+#--------------------------------------------------------
+compC     NEEDS_DEFINITION
+mpiCompC  auto
+#
+#--------------------------------------------------------
+# Fortran compiler
+#--------------------------------------------------------
+compF    NEEDS_DEFINITION
+#
+#--------------------------------------------------------
+# C++ compiler and MPI wrapper for optional packages
+#
+# Required only for static builds using the MED library
+# or for build of optional modules such as MEDCoupling
+# support.
+#--------------------------------------------------------
+compCxx     auto
+mpiCompCxx  auto
+#
+#--------------------------------------------------------
+# Python interpreter.
+#--------------------------------------------------------
+python    /bin/python3
+#
+#--------------------------------------------------------
+# Disable the Graphical user Interface ?
+#--------------------------------------------------------
+disable_gui  no
+#
+#--------------------------------------------------------
+# Disable frontend (also disables GUI) ?
+# May be useful for debug builds and HPC cluster builds
+# installed side-by side with a full build.
+#--------------------------------------------------------
+disable_frontend  no
+#
+#--------------------------------------------------------
+# Optional SALOME platform install path.
+#
+# This is the path for the main SALOME directory,
+# not the application directory.
+#
+# If code_saturne is built with SALOME support,
+# running "code_saturne salome" will launch the
+# associated application, containing the CFDSTUDY module.
+#--------------------------------------------------------
+salome    no
+#
+#--------------------------------------------------------
+# Optional packages:
+# ------------------
+#
+# MED / HDF5  For MED file format support
+#             (used by SALOME and by Gmsh).
+#
+# CGNS / HDF5 For CGNS file support
+#             (used by many meshing tools).
+#
+# Scotch (includes PT-Scotch) and/or ParMetis
+# for parallel partitioning
+#
+#   For Linux workstations, HDF5, CGNS, and even MED
+# packages may be available through the package manager.
+# HDF5 is also often available on large systems.
+# When building with SALOME, the platform distribution's
+# packages may be used, by setting in the matching entry
+# 'yes' under the "Use" column and simply 'salome' under
+# the path column.
+#
+# Scotch and Pt-Scotch are available in some Linux
+# distributions, but may be built with options
+# incompatible with non-threaded code_saturne runs.
+#
+#   To install CGNS or ParMetis, the CMake
+# configuration/installation tool is required
+# (it is available in most Linux distributions).
+#--------------------------------------------------------
+#
+#  Name    Use   Install  Path
+#
+hdf5       yes   yes      None
+cgns       yes   yes      None
+med        yes   yes      None
+scotch     no    no       None
+parmetis   no    no       None
+#
+#========================================================

@@ -1,0 +1,63 @@
+---
+
+- name: Update all packages to their latest version
+  yum:
+    name: "*"
+    state: latest
+
+- name: Install GCC, G++, GFortran, Python3, OpenMPI, PyQt5, Zlib development package
+  yum:
+    name:
+      - gcc
+      - gcc-c++
+      - gfortran
+      - python3
+      - openmpi
+      - openmpi-devel
+      - PyQt6
+      - zlib-devel
+    state: present
+
+- name: Download Code_Saturne
+  get_url:
+    url: https://www.code-saturne.org/releases/code_saturne-8.0.2.tar.gz
+    dest: /tmp/code_saturne-8.0.2.tar.gz
+
+- name: Extract Code_Saturne
+  unarchive:
+    src: /tmp/code_saturne-8.0.2.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Check if /tmp/saturne_build/set_ini exists
+  stat:
+    path: /tmp/saturne_build/set_ini
+  register: set_ini_file
+
+- name: Run install script for Code_Saturne if /tmp/saturne_build/set_ini does not exist
+  command: /tmp/code_saturne-8.0.2/install_saturne.py
+  when: not set_ini_file.stat.exists
+
+- name: Overwrite /tmp/saturne_build/set_ini with the updated version
+  copy:
+    src: set_ini
+    dest: /tmp/saturne_build/set_ini
+    owner: root  # Optional: Set the owner of the file
+    group: root  # Optional: Set the group of the file
+    mode: '0644'  # Optional: Set the permissions of the file
+  when: set_ini_file.stat.exists
+
+- name: Run install script for Code_Saturne again if /tmp/saturne_build/set_ini exists
+  command: /tmp/code_saturne-8.0.2/install_saturne.py
+  when: set_ini_file.stat.exists
+
+
+- name: Add Code_Saturne path to .bashrc
+  lineinfile:
+    path: ~/.bashrc
+    line: 'export PATH=/root/code_saturne/8.0.2/code_saturne-8.0.2/arch/Linux_x86_64/bin:$PATH'
+    create: yes
+
+- name: Source .bashrc to update PATH
+  command: source ~/.bashrc
+

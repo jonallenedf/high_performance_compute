@@ -1,0 +1,118 @@
+[root@saturne1 tmp]# ./saturne_test.sh cs_user_electric_scaling.c
+Creating a new Code_Saturne study case for cs_user_electric_scaling...
+code_saturne 8.0.2 study/case generation
+  o Creating study 'cs_user_electric_scaling'...
+  o Creating case  'my_case'...
+Copying cs_user_electric_scaling.c to the case SRC directory...
+Compiling the case...
+Running the simulation...
+
+                      code_saturne
+                      ============
+
+Version:   8.0.2
+Path:      /root/code_saturne/8.0.2/code_saturne-8.0.2/arch/Linux_x86_64
+
+Result directory:
+  /tmp/saturne_test/cs_user_electric_scaling/my_case/RESU/20231206-1436
+
+Copying base setup data
+-----------------------
+
+Compiling and linking user-defined functions
+--------------------------------------------
+
+Preparing calculation data
+--------------------------
+
+ Single processor code_saturne simulation.
+
+Preprocessing calculation
+-------------------------
+
+Starting calculation
+--------------------
+
+ solver script exited with status 1.
+
+Error running the calculation.
+
+Check run_solver.log and error* files for details.
+
+Domain None (code_saturne):git add
+  run_solver.log, error*.
+
+Post-calculation operations
+---------------------------
+
+Run failed in calculation stage.
+
+Simulation test case for cs_user_electric_scaling has been completed.
+[root@saturne1 tmp]# 
+
+
+[root@saturne1 20231206-1436]# cat run_solver.log 
+command: 
+ ./cs_solver
+
+***************************************************************
+
+                                  (R)
+                      Code_Saturne
+
+                      Version 8.0.2
+
+
+  Copyright (C) 1998-2023 EDF S.A., France
+
+  revision f2de1fcd4
+  build Wed 06 Dec 2023 11:56:22 AM UTC
+
+  The Code_Saturne CFD tool  is free software;
+  you can redistribute it and/or modify it under the terms
+  of the GNU General Public License as published by the
+  Free Software Foundation; either version 2 of the License,
+  or (at your option) any later version.
+
+  The Code_Saturne CFD tool is distributed in the hope that
+  it will be useful, but WITHOUT ANY WARRANTY; without even
+  the implied warranty of MERCHANTABILITY or FITNESS FOR A
+  PARTICULAR PURPOSE.  See the GNU General Public License
+  for more details.
+
+***************************************************************
+
+
+Local case configuration:
+
+  Date:                Wed 06 Dec 2023 02:36:42 PM UTC
+  System:              Linux 5.14.0-362.8.1.el9_3.x86_64 (Red Hat Enterprise Linux 9.3 (Plow))
+  Machine:             saturne1
+  Processor:           model name: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+  Memory:              257396 MB
+  User:                root (root)
+  Directory:           /tmp/saturne_test/cs_user_electric_scaling/my_case/RESU/20231206-1436
+  OpenMP threads:      1
+  Processors/node:     64
+
+  Compilers used for build:
+    C compiler:        cc (GCC) 11.4.1 20230605 (Red Hat 11.4.1-2)
+    C++ compiler:      c++ (GCC) 11.4.1 20230605 (Red Hat 11.4.1-2)
+    Fortran compiler:  GNU Fortran (GCC) 11.4.1 20230605 (Red Hat 11.4.1-2)
+  OpenMP version: 4.5
+
+
+
+/tmp/code_saturne-8.0.2/src/base/cs_preprocessor_data.c:227: Fatal error.
+
+No "mesh_input.csm" file or directory found.
+
+
+Call stack:
+   1: 0x7f9656bb1f71 <+0x1b1f71>                      (libsaturne-8.0.so)
+   2: 0x7f9656bb223e <cs_preprocessor_data_read_headers+0x3e> (libsaturne-8.0.so)
+   3: 0x7f9657b60ca3 <main+0x213>                     (libcs_solver-8.0.so)
+   4: 0x7f9655e3feb0 <+0x3feb0>                       (libc.so.6)
+   5: 0x7f9655e3ff60 <__libc_start_main+0x80>         (libc.so.6)
+   6: 0x4010e5     <_start+0x25>                    (cs_solver)
+End of stack
