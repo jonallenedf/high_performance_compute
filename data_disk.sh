@@ -36,15 +36,15 @@ mount /dev/${DISK}1 $MOUNT_POINT
 
 # Add mount to fstab
 echo "Adding mount to /etc/fstab"
-echo "/dev/${DISK}1    $MOUNT_POINT    ext4    defaults    0    2" >> /etc/fstab
+echo "/dev/${DISK}1    $MOUNT_POINT    ext4    defaults,users    0    2" >> /etc/fstab
 
 # Create the 'hpc' directory in the mounted disk
-HPC_DIR="$MOUNT_POINT/hpc"
+HPC_DIR="$MOUNT_POINT/hpc_staging"
 echo "Creating directory $HPC_DIR"
 mkdir -p $HPC_DIR
 
 # Create a symbolic link to the 'hpc' directory in the user's home directory
-SYMLINK="$HOME/hpc"
+SYMLINK="$HOME/hpc_staging"
 echo "Creating symlink to $HPC_DIR at $SYMLINK"
 ln -s $HPC_DIR $SYMLINK
 

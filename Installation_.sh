@@ -32,8 +32,8 @@ echo "Installation of prerequisites is complete."
 
 echo "Code_Saturne installation starting."
 
-# Navigate to the hpc directory
-cd ~/hpc
+# Navigate to the hpc_staging directory
+cd ~/hpc_staging
 
 # Download Code_Saturne
 wget https://www.code-saturne.org/releases/code_saturne-8.0.2.tar.gz
@@ -42,13 +42,13 @@ wget https://www.code-saturne.org/releases/code_saturne-8.0.2.tar.gz
 tar -xvf code_saturne-8.0.2.tar.gz
 
 # Create a build directory
-mkdir -p ~/hpc/saturne_build
+mkdir -p ~/hpc_staging/saturne_build
 
 # Navigate to the parent directory of code_saturne-8.0.2
-cd ~/hpc/code_saturne-8.0.2/..
+cd code_saturne-8.0.2/..
 
 # Run the install script
-~/hpc/code_saturne-8.0.2/install_saturne.py
+~/hpc_staging/code_saturne-8.0.2/install_saturne.py
 
 # Edit the set_ini file in the saturne_build directory
 # This uses a sed command to replace the relevant lines
@@ -59,21 +59,21 @@ cgns       yes   yes      None\n\
 med        yes   yes      None\n\
 scotch     no    no       None\n\
 parmetis   no    no       None\n\
-#' ~/hpc/saturne_build/set_ini
+#' ~/hpc_staging/saturne_build/set_ini
 
 # Display the set_ini file for review
 echo "Contents of set_ini file:"
-cat ~/hpc/saturne_build/set_ini
+cat ~/hpc_staging/saturne_build/set_ini
 
 # Pause the script for review
 echo "Press Enter to continue after reviewing the set_ini file..."
 read
 
 # Run the install script again
-~/hpc/code_saturne-8.0.2/install_saturne.py
+~/hpc_staging/code_saturne-8.0.2/install_saturne.py
 
 # Define the path to Code_Saturne
-code_saturne_path="/root/code_saturne/8.0.2/code_saturne-8.0.2/arch/Linux_x86_64/bin"
+code_saturne_path="~/hpc_staging/code_saturne-8.0.2/arch/Linux_x86_64/bin"
 
 # Check if the path is already in .bashrc
 if grep -Fxq "export PATH=$code_saturne_path:\$PATH" ~/.bashrc
@@ -93,26 +93,37 @@ echo "Code_Saturne environment has been updated."
 
 echo "Code_Saturne installation and setup script has completed."
 
+# Ask user if they want to continue with the testing
+while true; do
+    read -p "Do you wish to continue with testing the installation? (yes/no) " yn
+    case $yn in
+        [Yy]* ) break;;  # If yes, break the loop and continue
+        [Nn]* ) exit;;   # If no, exit the script
+        * ) echo "Please answer yes or no.";;  # If invalid response, ask again
+    esac
+done
+
+
 echo "Code_Saturne installation test started using cs_user_zones.c in EXAMPLES directory."
 
 # Variables
-CODE_SATURNE_EXAMPLES_PATH="/root/code_saturne/8.0.2/code_saturne-8.0.2/arch/Linux_x86_64/share/code_saturne/user_sources/EXAMPLES"
+CODE_SATURNE_EXAMPLES_PATH="~/hpc_staging/code_saturne-8.0.2/arch/Linux_x86_64/share/code_saturne/user_sources/EXAMPLES"
 STUDY_NAME="my_study"
 CASE_NAME="my_case"
-CASE_PATH="~/hpc/saturne_test/${STUDY_NAME}/${CASE_NAME}"
+CASE_PATH="~/hpc_staging/saturne_test/${STUDY_NAME}/${CASE_NAME}"
 
-# Create a new study case in hpc/saturne_test
+# Create a new study case in hpc_staging/saturne_test
 echo "Creating a new Code_Saturne study case..."
-mkdir -p ~/hpc/saturne_test
-cd ~/hpc/saturne_test
+mkdir -p ~/hpc_staging/saturne_test
+cd ~/hpc_staging/saturne_test
 code_saturne create -s $STUDY_NAME -c $CASE_NAME
 
 # Copy the cs_user_zones.c file to the SRC directory of the simulation case
 echo "Copying cs_user_zones.c to the case SRC directory..."
-cp "${CODE_SATURNE_EXAMPLES_PATH}/cs_user_zones.c" "${CASE_PATH}/SRC/"
+cp "$CODE_SATURNE_EXAMPLES_PATH/cs_user_zones.c" "$CASE_PATH/SRC/"
 
 # Navigate to the case directory
-cd $CASE_PATH
+cd "$CASE_PATH"
 
 # Compile the case
 echo "Compiling the case..."
