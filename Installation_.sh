@@ -45,25 +45,37 @@ tar -xvf code_saturne-8.0.2.tar.gz
 mkdir -p ~/hpc_staging/saturne_build
 
 # Navigate to the parent directory of code_saturne-8.0.2
-cd code_saturne-8.0.2/..
+cd ~/hpc_staging/saturne_build
 
 # Run the install script
 ~/hpc_staging/code_saturne-8.0.2/install_saturne.py
 
-# Edit the set_ini file in the saturne_build directory
-# This uses a sed command to replace the relevant lines
-sed -i '/#  Name    Use   Install  Path/,/parmetis   no    no       None/c\
-#  Name    Use   Install  Path\n#\n\
-hdf5       yes   yes      None\n\
-cgns       yes   yes      None\n\
-med        yes   yes      None\n\
-scotch     no    no       None\n\
-parmetis   no    no       None\n\
-#' ~/hpc_staging/saturne_build/set_ini
+# Define the path to the setup file
+SETUP_FILE="~/hpc_staging/saturne_build/setup"
 
-# Display the set_ini file for review
-echo "Contents of set_ini file:"
-cat ~/hpc_staging/saturne_build/set_ini
+# Check if the setup file exists
+if [ -f "$SETUP_FILE" ]; then
+    # Edit the setup file using sed
+    sed -i '/#  Name    Use   Install  Path/,/parmetis   no    no       None/c\
+    #  Name    Use   Install  Path\n#\n\
+    hdf5       yes   yes      None\n\
+    cgns       yes   yes      None\n\
+    med        yes   yes      None\n\
+    scotch     no    no       None\n\
+    parmetis   no    no       None\n\
+    #' "$SETUP_FILE"
+
+    # Display the setup file for review
+    echo "Contents of setup file:"
+    cat "$SETUP_FILE"
+
+    # Pause the script for review
+    echo "Press Enter to continue after reviewing the setup file..."
+    read
+else
+    echo "Error: setup file does not exist at $SETUP_FILE"
+    exit 1
+fi
 
 # Pause the script for review
 echo "Press Enter to continue after reviewing the set_ini file..."
